@@ -31,17 +31,7 @@ async function run() {
     const cartCollection = BonikDb.collection("cart");
     const userCollection = BonikDb.collection("user");
 
-    // admin api
-    // app.get('/user/admin/:email', async(req,res)=>{
-    //   const email = req.params.email
-    //   const query = {email :email}
-    //   const user = await userCollection.findOne(query)
-    //   let admin
-    //   if(user){
-    //    let admin = user?.role ==='admin'
-    //   }
-    //   res.send({admin})
-    // })
+
 
     // users related Api
     app.post("/users", async (req, res) => {
@@ -57,9 +47,19 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/product/:id", async (req, res) => {
+    // get Product by category 
+
+    app.get('/product/:category', async(req,res)=>{
+      const category = req.params.category 
+      const result = await productCollection.find({category}).toArray()
+      console.log(result);
+      res.send(result)
+
+    })
+
+    app.get("/products/:id", async (req, res) => {
       const id = req.params.id;
-      // console.log(id);
+      console.log(id);
       const query = { _id: new ObjectId(id) };
       const result = await productCollection.findOne(query);
       res.send(result);
